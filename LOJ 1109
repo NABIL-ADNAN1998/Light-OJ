@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+ll logbook[1005];
+vector<ll> prime;
+
+void p()
+{
+    for (ll i = 0; i < 1005; i++)
+    {
+        logbook[i] = i;
+    }
+
+    for (ll i = 2; i <= 1000; i++)
+    {
+        if (logbook[i] == i)
+        {
+            for (ll j = (i + i); j <= 1002; j += i)
+            {
+                logbook[j] = -1;
+            }
+        }
+    }
+
+    for (ll i = 2; i <= 1000; i++)
+    {
+        if (logbook[i] == -1)
+        {
+            continue;
+        }
+        else
+        {
+            prime.push_back(logbook[i]);
+        }
+    }
+}
+
+bool m(pair<ll, ll> a, pair<ll, ll> b)
+{
+    if (a.first == b.first)
+    {
+        return a.second > b.second;
+    }
+    return a.first < b.first;
+}
+
+int main()
+{
+    // p();
+    ll a[1005] = {0};
+    for (ll i = 1; i <= 1000; i++)
+    {
+        for (ll j = i; j <= 1000; j += i)
+        {
+            a[j] += 1;
+        }
+    }
+    vector<pair<ll, ll>> func;
+    for (ll i = 0; i <= 1000; i++)
+    {
+        func.push_back({a[i], i});
+    }
+
+    sort(func.begin(), func.end(), m);
+
+    ll test;
+    cin >> test;
+    for (ll i = 1; i <= test; i++)
+    {
+        ll n;
+        cin >> n;
+        cout << "Case " << i << ": " << func[n].second << endl;
+        
+    }
+}
