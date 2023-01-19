@@ -1,0 +1,84 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define mx 10000005
+
+bool a[mx];
+vector<ll> primes;
+
+int prime()
+{
+
+    for (ll i = 2; i <= mx - 2; i++)
+    {
+        if (a[i] == 0)
+        {
+            primes.push_back(i);
+            for (ll j = i * i; j <= mx - 2; j += i)
+            {
+                a[j] = 1;
+            }
+        }
+    }
+}
+
+int divisor_count(ll x)
+{
+    ll div = 1;
+    ll i = 0;
+    while (primes[i] * primes[i] <= x)
+    {
+        ll count = 0;
+        if (x % primes[i] == 0)
+        {
+            while (x % primes[i] == 0)
+            {
+                x = x / primes[i];
+                count++;
+            }
+        }
+        div *= (count + 1);
+        i++;
+    }
+
+    if (x != 1)
+    {
+        div *= 2;
+    }
+
+    return div;
+}
+
+int main()
+{
+    prime();
+    ll t;
+    cin >> t;
+    for (ll k = 1; k <= t; k++)
+    {
+        ll a, b, divisor;
+        cin >> a >> b;
+        divisor = divisor_count(a);
+
+        ll r = sqrt(a);
+
+        if (r < b)
+        {
+            cout << "Case " << k << ": " << 0 << endl;
+        }
+        else
+        {
+            ll baad = 0;
+            for (ll j = 1; j < b; j++)
+            {
+                if (a % j == 0)
+                {
+                    baad++;
+                }
+            }
+            ll ans = (divisor / 2) - baad;
+            cout << "Case " << k << ": " << ans << endl;
+        }
+    }
+}
