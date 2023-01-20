@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define mx 10000005
+
+bool a[mx];
+vector<ll> primes;
+
+int prime()
+{
+    for (ll i = 2; i <= mx - 1; i++)
+    {
+        if (a[i] == 0)
+        {
+            primes.push_back(i);
+            for (ll j = i * i; j <= mx - 1; j += i)
+            {
+                a[j] = 1;
+            }
+        }
+    }
+}
+
+int main()
+{
+    prime();
+    ll t;
+    cin >> t;
+    for (ll k = 1; k <= t; k++)
+    {
+        ll n, ans = 0;
+        cin >> n;
+        ll luck[n + 5];
+        for (ll i = 1; i <= n; i++)
+        {
+            cin >> luck[i];
+        }
+        for (ll i = 1; i <= n; i++)
+        {
+            for (ll j = luck[i] + 1;; j++)
+            {
+                if (a[j] == 0)
+                {
+                    ans += j;
+                    break;
+                }
+            }
+        }
+
+        cout << "Case " << k << ": " << ans << " "
+             << "Xukha" << endl;
+    }
+}
