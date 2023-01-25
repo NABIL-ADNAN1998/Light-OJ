@@ -1,0 +1,103 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+#define ff first
+#define ss second
+#define pb push_back
+#define mx 10000009
+
+bool a[mx];
+vector<ll> primes;
+vector<pair<ll, ll>> p;
+vector<ll> ans;
+
+int siev()
+{
+    for (ll i = 2; i <= mx - 1; i++)
+    {
+        if (a[i] == 0)
+        {
+            primes.push_back(i);
+            for (ll j = i * i; j <= mx - 1; j += i)
+            {
+                a[j] = 1;
+            }
+        }
+    }
+}
+
+ll prime_facto(ll n)
+{
+
+    for (ll i = 0; primes[i] * primes[i] <= n; i++)
+    {
+        ll count = 0;
+        if (n % primes[i] == 0)
+        {
+            while (n % primes[i] == 0)
+            {
+                count++;
+                n /= primes[i];
+            }
+        }
+        p.push_back({primes[i], count});
+    }
+    if (n > 1)
+    {
+        p.push_back({n, 1});
+    }
+}
+
+int main()
+{
+    siev();
+    ll t;
+    cin >> t;
+    for (ll k = 1; k <= t; k++)
+    {
+        ll total, l, n;
+        cin >> total >> l;
+        n = total - l;
+        prime_facto(n);
+        ans.push_back(1);
+        for (ll i = 0; i < p.size(); i++)
+        {
+            ll x = ans.size();
+            for (ll j = 1, b = p[i].ff; j <= p[i].ss; j++, b *= p[i].ff)
+            {
+                for (ll k = 0; k < x; k++)
+                {
+                    ans.push_back(ans[k] * b);
+                }
+            }
+        }
+
+        sort(ans.begin(), ans.end());
+        ll m = 0;
+        for (ll i = 0; i < ans.size(); i++)
+        {
+            if (ans[i] <= l)
+            {
+                m++;
+            }
+        }
+        // cout << m << endl;
+        ans.erase(ans.begin(), ans.begin() + m);
+        cout << "Case " << k << ": ";
+
+        if (ans.size() == 0)
+        {
+            cout << "impossible";
+        }
+        else
+        {
+            for (ll i = 0; i < ans.size(); i++)
+            {
+                cout << ans[i] << " ";
+            }
+        }
+        cout << endl;
+        ans.clear();
+        p.clear();
+    }
+}
