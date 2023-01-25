@@ -1,0 +1,94 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define mx 10000005
+
+bool a[mx];
+vector<ll> primes;
+vector<pair<ll, ll>> p;
+vector<ll> ans;
+
+int prime()
+{
+    for (ll i = 2; i <= mx - 1; i++)
+    {
+        if (a[i] == 0)
+        {
+            primes.push_back(i);
+            for (ll j = i * i; j <= mx - 1; j += i)
+            {
+                a[j] = 1;
+            }
+        }
+    }
+}
+
+int prime_facto(ll n)
+{
+    ll count;
+    for (ll i = 0; primes[i] * primes[i] <= n; i++)
+    {
+        count = 0;
+        if (n % primes[i] == 0)
+        {
+            while (n % primes[i] == 0)
+            {
+                n /= primes[i];
+                count++;
+            }
+            p.push_back({primes[i], count});
+        }
+    }
+
+    if (n > 1)
+    {
+        p.push_back({n, 1});
+    }
+}
+
+int main()
+{
+    prime();
+    ll t;
+    cin >> t;
+    for (ll k = 1; k <= t; k++)
+    {
+        ll n;
+        cin >> n;
+        prime_facto(n);
+        ans.push_back(1);
+        cout << "Case " << k << ":" << endl;
+        // cout << 1 << " ";
+        for (ll i = 0; i < p.size(); i++)
+        {
+            ll x = ans.size();
+            for (ll j = 1, b = p[i].first; j <= p[i].second; j++, b *= p[i].first)
+            {
+                if (j % 2 == 0)
+                {
+                    for (ll k = 0; k < x; k++)
+                    {                                                               // pow() function have some mental issue in Cpp.It is suggested not to use pow()
+                        ans.push_back(ans[k] * b);
+                        // cout << ans[k] * (pow(p[i].first, j)) << " ";
+                    }
+                }
+                else
+                {
+                    for (ll k = x - 1; k >= 0; k--)
+                    {
+                        ans.push_back(ans[k] * b);
+                        // cout << ans[k] * (pow(p[i].first, j)) << " ";
+                    }
+                }
+            }
+        }
+        for (ll i = 0; i < ans.size(); i++)
+        {
+            cout << ans[i] << " ";
+        }
+        cout << endl;
+        p.clear();
+        ans.clear();
+    }
+}
