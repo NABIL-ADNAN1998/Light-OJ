@@ -1,0 +1,100 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+#define ff first
+#define ss second
+#define pb push_back
+#define mx 80009
+#define modu 1000000007
+
+bool a[mx];
+vector<ll> primes;
+vector<pair<ll, ll>> p;
+vector<ll> divisors;
+
+void siv()
+{
+    for (ll i = 2; i <= mx - 1; i++)
+    {
+        if (a[i] == 0)
+        {
+            primes.push_back(i);
+            for (ll j = i * i; j < mx - 1; j += i)
+            {
+                a[j] = 1;
+            }
+        }
+    }
+}
+
+void factorization(ll n, ll m)
+{
+
+    for (ll i = 0; primes[i] * primes[i] <= n; i++)
+    {
+        ll count = 0;
+        if (n % primes[i] == 0)
+        {
+            while (n % primes[i] == 0)
+            {
+                count++;
+                n /= primes[i];
+            }
+        }
+        p.pb({primes[i], count * m});
+        // cout << primes[i] << "  " << count << endl;
+    }
+
+    if (n > 1)
+    {
+        p.pb({n, m});
+        // cout << n << "  " << m << endl;
+    }
+}
+
+ll bigMod(ll base, ll pow)
+{
+    if (pow == 0)
+        return 1;
+    if (pow % 2 == 0)
+    {
+        ll y = bigMod(base, pow / 2);
+        return (y * y) % modu;
+    }
+    else
+    {
+        return bigMod(base, pow - 1) * base % modu;
+    }
+}
+
+int main()
+{
+
+    siv();
+    ll test;
+    cin >> test;
+    for (ll t = 1; t <= test; t++)
+    {
+        ll n, m;
+        cin >> n >> m;
+        factorization(n, m);
+        ll sum = 1;
+        for (ll i = 0; i < p.size(); i++)
+        {
+            ll up = bigMod(p[i].ff, p[i].ss + 1) - 1;
+            up+=modu;
+            up %= modu;
+            up *= bigMod(p[i].ff - 1, modu - 2);
+            up%=modu;
+            sum *= up;
+            sum %= modu;
+        }
+
+        // sum = sum % modu;
+
+        cout << "Case " << t << ": " << sum << endl;
+
+        p.clear();
+        divisors.clear();
+    }
+}
