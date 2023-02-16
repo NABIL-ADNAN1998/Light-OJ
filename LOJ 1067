@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+#define ff first
+#define ss second
+#define pb push_back
+#define mx 1
+#define modu 1000003
+
+bool a[mx];
+vector<ll> primes;
+vector<pair<ll, ll>> p;
+vector<ll> memory;
+
+void store()
+{
+    memory.pb(1);
+    for (ll i = 1; i < 1000001; i++)
+    {
+        memory.pb((memory[i - 1] * i) % modu);
+    }
+}
+
+ll bigMod(ll base, ll power)
+{
+    if (power == 0)
+        return 1;
+    if (power % 2 == 0)
+    {
+        ll y = bigMod(base, power / 2);
+        return (y * y) % modu;
+    }
+    else
+    {
+        ll y = bigMod(base, power - 1);
+        return (y * base) % modu;
+    }
+}
+
+ll inv_mod(ll base)
+{
+    return bigMod(base, modu - 2);
+}
+
+int main()
+{
+    store();
+    ll test;
+    cin >> test;
+    for (ll t = 1; t <= test; t++)
+    {
+        ll n, k, ans = 1;
+        cin >> n >> k;
+        ans *= memory[n];
+        ans %= modu;
+        ans *= inv_mod(memory[k]);
+        ans %= modu;
+        ans *= inv_mod(memory[n - k]);
+        ans %= modu;
+
+        cout << "Case " << t << ": " << ans << endl;
+    }
+}
