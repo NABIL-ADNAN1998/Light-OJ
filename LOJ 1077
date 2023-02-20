@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define mx 10000005
+
+bool temp[mx];
+vector<pair<ll, ll>> p;
+vector<ll> prime;
+ll z[mx] = {0};
+
+void siev()
+{
+    for (ll i = 4; i < mx; i += 2)
+    {
+        temp[i] = 1;
+    }
+    prime.push_back(2);
+    for (ll i = 3; i < mx; i += 2)
+    {
+        if (temp[i] == 0)
+        {
+            prime.push_back(i);
+            for (ll j = i + i; j < mx; j += i)
+            {
+                temp[j] = 1;
+            }
+        }
+    }
+}
+
+ll fun(ll n, ll m)
+{
+    if (m)
+    {
+        return fun(m, n % m);
+    }
+    else
+    {
+        return n;
+    }
+}
+
+int main()
+{
+    ll test;
+    cin >> test;
+    for (ll t = 1; t <= test; t++)
+    {
+        ll a, b, c, d, x, y;
+        cin >> a >> b >> c >> d;
+        x = abs(c - a);
+        y = abs(d - b);
+        ll ans = fun(x, y);
+        cout << "Case " << t << ": " << ans + 1 << endl;
+    }
+}
