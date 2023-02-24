@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define mx 10000005
+
+bool temp[mx];
+vector<pair<ll, ll>> p;
+vector<ll> prime;
+ll z[mx] = {0};
+ll ans = 1;
+
+int main()
+{
+
+    ll test;
+    cin >> test;
+    for (ll t = 1; t <= test; t++)
+    {
+        ll n, sum = 0;
+        cin >> n;
+        vector<ll> ranges;
+        for (ll i = 2; i * i <= n; i++)
+        {
+            ll temp = n / i;
+            ranges.push_back(temp);
+            sum += ((temp - 1) * i);
+        }
+        // cout << sum << endl;
+        ranges.push_back(sqrt(n));
+        for (ll i = ranges.size() - 1; i > 0; i--)
+        {
+            ll nt = ranges[i - 1] - ranges[i];
+       
+
+            ll tem = ranges[i] + 1;
+            tem += ranges[i - 1];
+            tem *= nt;
+            tem /= 2;
+            tem *= ((n / ranges[i - 1]) - 1);
+
+            
+            sum += tem;
+        }
+
+        cout << "Case " << t << ": " << sum << endl;
+    }
+}
