@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define mx 10000005
+
+bool temp[mx];
+vector<pair<ll, ll>> p;
+vector<ll> ans;
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("testCase.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+#endif
+
+    ll test;
+    cin >> test;
+    for (ll t = 1; t <= test; t++)
+    {
+        ull n, x;
+        cin >> n;
+        cout << "Case " << t << ":";
+
+        x = (10 * n) / 9;
+
+        x--;
+        if (x - (x / 10) == n)
+        {
+            printf(" %llu", x);
+        }
+
+        x++;
+        // cout<<x<<endl;
+        if ((x - (x / 10)) == n)
+        {
+            printf(" %llu", x);
+        }
+
+        // x++;
+        // if ((x - (x / 10)) == n)
+        // {
+        //     printf(" %lld", x);
+        // }
+
+        printf("\n");
+    }
+}
