@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+bool box[10000000 + 2];
+vector<ll> prime;
+vector<ll> factor_count;
+
+ll siev()
+{
+  box[0] = 1;
+  box[1] = 1;
+  for (ll i = 2 * 2; i <= 10000000; i += 2)
+  {
+    box[i] = 1;
+  }
+  for (ll i = 3; i * i <= 10000000; i += 2)
+  {
+    for (ll j = i * i; j <= 10000000; j += (2 * i))
+    {
+      box[j] = 1;
+    }
+  }
+
+  for (ll i = 2; i <= 10000000; i++)
+  {
+    if (box[i] == 0)
+    {
+      prime.push_back(i);
+    }
+  }
+}
+
+ll p_facto(ll n)
+{
+
+  ll count = 0, p = 0;
+
+  for (ll i = 0; prime[i] * prime[i] <= n; i++)
+  {
+    if (n % prime[i] == 0)
+    {
+      while (n % prime[i] == 0)
+      {
+        n /= prime[i];
+        count++;
+      }
+      factor_count.push_back(count);
+      p = __gcd(p, count);
+    }
+    count = 0;
+  }
+  if (n > 1)
+  {
+    factor_count.push_back(1);
+    p = __gcd(p, 1ll);
+  }
+
+  return p;
+}
+
+int main()
+{
+
+  siev();
+
+  ll test;
+  cin >> test;
+  for (ll t = 1; t <= test; t++)
+  {
+    ll a, isNeg = 0;
+    cin >> a;
+    if (a < 0)
+      isNeg = 1, a = abs(a);
+    ll p = p_facto(a);
+
+    if (isNeg)
+      while (p % 2 == 0)
+        p /= 2;
+
+    cout << "Case " << t << ": " << p << endl;
+
+    factor_count.clear();
+  }
+}
